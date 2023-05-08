@@ -59,15 +59,15 @@ export default function SearchScreen(props) {
   };
 
   const renderRecipes = ({ item }) => (
-    <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" onPress={() => onPressRecipe(item)}>
-      <View style={styles.container}>
+      <View >
         <Image style={styles.photo} source={{ uri: item.photo_url }} />
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.category}>{getCategoryName(item.categoryId)}</Text>
-      </View>
+        <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" onPress={() => onPressRecipe(item)}>
+        <Text style={styles.searchButton}>Lihat Detail</Text>
+      
     </TouchableHighlight>
+    </View>
   );
-
   return (
     <View>
       <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={data} renderItem={renderRecipes} keyExtractor={(item) => `${item.recipeId}`} />
