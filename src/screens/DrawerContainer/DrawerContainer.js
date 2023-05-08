@@ -28,7 +28,10 @@ export default function DrawerContainer(props) {
         <MenuButton
           title="PROFILE"
           source={require("../../../assets/icons/user.png")}
-          onPress={() => Alert.alert('Coming Soon!', 'This feature will be available in a future update.')}
+          onPress={() => {
+            navigation.navigate("Profile");
+            navigation.closeDrawer();
+          }}
         />
         <MenuButton
           title="LOG OUT"

@@ -7,6 +7,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import LoginScreen from './src/screens/Login/LoginScreen'; 
 import HomeScreen from './src/screens/Home/HomeScreen';
+import ProfileScreen from './src/screens/Profile/ProfileScreen';
+import IngredientSelectionScreen from './src/screens/Profile/IngredientSelectionScreen';
 import CategoriesScreen from './src/screens/Categories/CategoriesScreen';
 import RecipeScreen from './src/screens/Recipe/RecipeScreen';
 import RecipesListScreen from './src/screens/RecipesList/RecipesListScreen';
@@ -31,7 +33,8 @@ function MainNavigator() {
     >
       <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
       <Stack.Screen name='Home' component={HomeScreen} />
-      <Stack.Screen name='Categories' component={CategoriesScreen}/>
+      <Stack.Screen name='Profile' component={ProfileScreen}/>
+      <Stack.Screen name='IngredientSelection' component={IngredientSelectionScreen}/>
       <Stack.Screen name='Recipe' component={RecipeScreen}/>
       <Stack.Screen name='RecipesList' component={RecipesListScreen} />
       <Stack.Screen name='Ingredient' component={IngredientScreen} />
