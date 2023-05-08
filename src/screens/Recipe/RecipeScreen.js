@@ -16,6 +16,7 @@ import {
 } from "../../data/MockDataAPI";
 import BackButton from "../../components/BackButton/BackButton";
 import ViewIngredientsButton from "../../components/ViewIngredientsButton/ViewIngredientsButton";
+import ShareButton from "../../components/ShareButton/ShareButton";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -40,7 +41,8 @@ export default function RecipeScreen(props) {
           }}
         />
       ),
-      headerRight: () => <View />,
+      headerRight: () => 
+        <ShareButton shareData={[navigation, item.title]} />,
     });
   }, []);
 
