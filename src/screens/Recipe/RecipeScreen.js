@@ -55,7 +55,7 @@ export default function RecipeScreen(props) {
   const onPressIngredient = (item) => {
     var name = getIngredientName(item);
     let ingredient = item;
-    navigation.navigate("Ingredient", { ingredient, name });
+    navigation.navigate("Ingredients", { ingredient, name });
   };
 
   return (
