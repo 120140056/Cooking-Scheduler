@@ -6,6 +6,7 @@ import {
   Image,
   Dimensions,
   TouchableHighlight,
+  Alert,
 } from "react-native";
 import styles from "./styles";
 import Carousel, { Pagination } from "react-native-snap-carousel";
@@ -57,7 +58,7 @@ export default function RecipeScreen(props) {
   const onPressIngredient = (item) => {
     var name = getIngredientName(item);
     let ingredient = item;
-    navigation.navigate("Ingredient", { ingredient, name });
+    navigation.navigate("Ingredients", { ingredient, name });
   };
 
   return (
