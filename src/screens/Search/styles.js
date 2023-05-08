@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 import { RecipeCard } from "../../AppStyles";
 
 const styles = StyleSheet.create({
-  container: RecipeCard.container,
   photo: RecipeCard.photo,
   title: RecipeCard.title,
   category: RecipeCard.category,
@@ -28,7 +27,18 @@ const styles = StyleSheet.create({
     color: "black",
     width: 180,
     height: 50,
-  }
-});
+  },
+  searchButton: {
+    backgroundColor: '#2196F3',
+    borderRadius: 5,
+    padding: 10,
+    margin: 10,
+  },
+  searchButtonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  });
 
 export default styles;
