@@ -64,6 +64,7 @@ export default function SearchScreen(props) {
         <Image style={styles.photo} source={{ uri: item.photo_url }} />
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.category}>{getCategoryName(item.categoryId)}</Text>
+        <Text>Lihat Detail</Text>
       </View>
     </TouchableHighlight>
   );
