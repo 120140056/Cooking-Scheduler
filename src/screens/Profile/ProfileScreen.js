@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from './style';
 
@@ -63,22 +63,24 @@ const ProfileScreen = () => {
       <View style={styles.listContainer}>
         <TouchableOpacity
           style={styles.listButton}
-          onPress={() => navigation.navigate('IngredientSelection', { favorites, handleAddFavorite, handleRemoveFavorite })}
+          //onPress={() => navigation.navigate('IngredientSelection', { favorites, handleAddFavorite, handleRemoveFavorite })}
+          onPress={() => Alert.alert('Coming Soon!', 'This feature will be available in a future update.')}
         >
           <Text style={styles.listTitle}>Favorite Ingredients:</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.listButton}
-          onPress={() => navigation.navigate('IngredientSelection', { avoided, handleAddAvoided, handleRemoveAvoided })}
+          //onPress={() => navigation.navigate('IngredientSelection', { avoided, handleAddAvoided, handleRemoveAvoided })}
+          onPress={() => Alert.alert('Coming Soon!', 'This feature will be available in a future update.')}
         >
           <Text style={styles.listTitle}>Avoided Ingredients:</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleUpdate}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
           <Text>Update</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleCancel}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
           <Text>Cancel</Text>
         </TouchableOpacity>
       </View>

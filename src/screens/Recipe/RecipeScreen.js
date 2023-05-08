@@ -6,6 +6,7 @@ import {
   Image,
   Dimensions,
   TouchableHighlight,
+  Alert,
 } from "react-native";
 import styles from "./styles";
 import Carousel, { Pagination } from "react-native-snap-carousel";
@@ -40,7 +41,19 @@ export default function RecipeScreen(props) {
           }}
         />
       ),
-      headerRight: () => <View />,
+      headerRight: () => (
+        <TouchableHighlight
+          onPress={() => {
+            // Your share functionality goes here
+          }}
+        >
+          <Image
+            style={styles.shareIcon}
+            source={require("../../../assets/icons/share.png")}
+            onPress={() => Alert.alert('Coming Soon!', 'This feature will be available in a future update.')}
+          />
+        </TouchableHighlight>
+      ),
     });
   }, []);
 
