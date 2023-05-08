@@ -9,7 +9,6 @@ import LoginScreen from './src/screens/Login/LoginScreen';
 import HomeScreen from './src/screens/Home/HomeScreen';
 import ProfileScreen from './src/screens/Profile/ProfileScreen';
 import IngredientSelectionScreen from './src/screens/Profile/IngredientSelectionScreen';
-import CategoriesScreen from './src/screens/Categories/CategoriesScreen';
 import RecipeScreen from './src/screens/Recipe/RecipeScreen';
 import RecipesListScreen from './src/screens/RecipesList/RecipesListScreen';
 import DrawerContainer from './src/screens/DrawerContainer/DrawerContainer';
@@ -63,7 +62,6 @@ function DrawerStack() {
     </Drawer.Navigator>
   )
 } 
-
 
  export default function AppContainer() {
   return(
