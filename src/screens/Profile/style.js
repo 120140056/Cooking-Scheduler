@@ -51,15 +51,6 @@ const styles = StyleSheet.create({
     width: '45%',
     alignItems: 'center',
   },
-  passwordInput: {
-    width: '100%',
-    height: 40,
-    borderWidth: 1,
-    borderColor: 'gray',
-    marginBottom: 10,
-    paddingLeft: 10,
-    borderRadius: 5,
-  },
 });
 
 export default styles;

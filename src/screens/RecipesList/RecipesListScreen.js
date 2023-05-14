@@ -11,6 +11,9 @@ export default function RecipesListScreen(props) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerTitleStyle: {
+        top: 0,
+      },
       title: route.params?.title,
       headerRight: () => <View />,
     });

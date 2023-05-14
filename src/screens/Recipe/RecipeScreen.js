@@ -34,6 +34,9 @@ export default function RecipeScreen(props) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerTitleStyle: {
+        top: 0,
+      },
       headerTransparent: "true",
       headerLeft: () => (
         <BackButton

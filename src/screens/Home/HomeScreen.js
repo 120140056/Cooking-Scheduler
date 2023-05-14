@@ -10,6 +10,9 @@ export default function HomeScreen(props) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerTitleStyle: {
+        top: 0,
+      },
       headerLeft: () => (
         <MenuImage
           onPress={() => {

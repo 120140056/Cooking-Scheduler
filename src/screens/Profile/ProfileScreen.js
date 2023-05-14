@@ -1,80 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useLayoutEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import styles from './style';
-import { onAuthStateChanged, updateEmail, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
-
+import { updateEmail, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 import { auth } from '../Login/LoginScreen';
+import styles from './style';
 
 const ProfileScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [favorites, setFavorites] = useState([]);
-  const [avoided, setAvoided] = useState([]);
-  const [showPassword, setShowPassword] = useState(false);
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setEmail(user.email || '');
-        if (user.providerData[0].providerId === 'password') {
-          reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, password))
-            .then(() => {
-              setPassword(user.providerData[0].uid);
-              setLoading(false);
-            })
-            .catch((error) => {
-              console.log('Error reauthenticating user:', error);
-              setPassword(''); // Set an empty password in case of error
-              setLoading(false);
-            });
-        } else {
-          setPassword(''); // Set an empty password for non-password based authentication
-          setLoading(false);
-        }
-      }
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitleStyle: {
+        top: 0,
+      },
     });
-
-    return unsubscribe;
   }, []);
 
-  const handleAddFavorite = (ingredient) => {
-    setFavorites((prevFavorites) => [...prevFavorites, ingredient]);
-  };
-
-  const handleRemoveFavorite = (ingredient) => {
-    setFavorites((prevFavorites) =>
-      prevFavorites.filter((item) => item !== ingredient)
-    );
-  };
-
-  const handleAddAvoided = (ingredient) => {
-    setAvoided((prevAvoided) => [...prevAvoided, ingredient]);
-  };
-
-  const handleRemoveAvoided = (ingredient) => {
-    setAvoided((prevAvoided) =>
-      prevAvoided.filter((item) => item !== ingredient)
-    );
-  };
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const navigation = useNavigation();
 
   const handleUpdate = () => {
     const user = auth.currentUser;
 
     if (user) {
-      const credential = EmailAuthProvider.credential(user.email, password);
+      const credential = EmailAuthProvider.credential(user.email, oldPassword);
 
-      reauthenticateWithCredential(user, credential)
-        .then(() => {
-          updateEmail(user, email)
+      updateEmail(user, email)
             .then(() => {
               console.log('Email updated successfully.');
             })
             .catch((error) => {
               console.log('Error updating email:', error);
             });
+            
+      reauthenticateWithCredential(user, credential)
+        .then(() => {
           updatePassword(user, password)
             .then(() => {
               console.log('Password updated successfully.');
@@ -92,8 +53,7 @@ const ProfileScreen = () => {
   const handleCancel = () => {
     setEmail('');
     setPassword('');
-    setFavorites([]);
-    setAvoided([]);
+    setOldPassword('');
   };
 
   const togglePasswordVisibility = () => {
@@ -109,11 +69,18 @@ const ProfileScreen = () => {
           value={email}
           onChangeText={setEmail}
         />
-        <Text>Password:</Text>
+        <Text>Old Password:</Text>
+        <TextInput
+          style={styles.input}
+          value={oldPassword}
+          onChangeText={setOldPassword}
+          secureTextEntry={!showPassword}
+        />
+        <Text>New Password:</Text>
         <View style={styles.passwordContainer}>
           <TextInput
-            style={styles.passwordInput}
-            value={loading ? 'Loading...' : password}
+            style={styles.input}
+            value={password}
             onChangeText={setPassword}
             secureTextEntry={!showPassword}
           />
@@ -128,14 +95,12 @@ const ProfileScreen = () => {
       <View style={styles.listContainer}>
         <TouchableOpacity
           style={styles.listButton}
-          //onPress={() => navigation.navigate('IngredientSelection', { favorites, handleAddFavorite, handleRemoveFavorite })}
           onPress={() => Alert.alert('Coming Soon!', 'This feature will be available in a future update.')}
         >
           <Text style={styles.listTitle}>Favorite Ingredients:</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.listButton}
-          //onPress={() => navigation.navigate('IngredientSelection', { avoided, handleAddAvoided, handleRemoveAvoided })}
           onPress={() => Alert.alert('Coming Soon!', 'This feature will be available in a future update.')}
         >
           <Text style={styles.listTitle}>Avoided Ingredients:</Text>
@@ -143,9 +108,9 @@ const ProfileScreen = () => {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={() => {
-            handleUpdate()
-            navigation.goBack()
-          }}>
+          handleUpdate();
+          navigation.goBack();
+        }}>
           <Text>Update</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
