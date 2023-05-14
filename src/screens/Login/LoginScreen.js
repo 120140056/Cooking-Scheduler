@@ -1,48 +1,61 @@
-import { useNavigation } from '@react-navigation/core'
-import React, { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native'
-//import { auth } from '../../../firebase'
+import { useNavigation } from '@react-navigation/core';
+import React, { useEffect, useState } from 'react';
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native';
+import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyBmipUT-Z2Q37X8lvC1YGk3SMTgFQKMbvc',
+  authDomain: 'cooking-scheduler-d4f5e.firebaseapp.com',
+  projectId: 'cooking-scheduler-d4f5e',
+  storageBucket: 'cooking-scheduler-d4f5e.appspot.com',
+  messagingSenderId: '813643875918',
+  appId: '1:813643875918:web:fc188c314f6ab18dcba51f'
+};
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
-  /*
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) {
-        navigation.replace("Home")
-      }
-    })
+    initializeApp(firebaseConfig);
+    const auth = getAuth();
 
-    return unsubscribe
-  }, [])
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigation.replace('Home');
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   const handleSignUp = () => {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(userCredentials => {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
         const user = userCredentials.user;
         console.log('Registered with:', user.email);
       })
-      .catch(error => alert(error.message))
-  }
+      .catch((error) => alert(error.message));
+  };
 
   const handleLogin = () => {
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then(userCredentials => {
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
         const user = userCredentials.user;
         console.log('Logged in with:', user.email);
       })
-      .catch(error => alert(error.message))
-  }
-  */
+      .catch((error) => alert(error.message));
+  };
 
   function handlePress() {
-    navigation.navigate("Home");
+    navigation.navigate('Home');
   }
 
   return (
@@ -76,15 +89,15 @@ const LoginScreen = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          //onPress={handleLogin}
-          onPress={handlePress}
+          onPress={handleLogin}
+          //onPress={handlePress}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          //onPress={handleSignUp}
-          onPress={handlePress}
+          onPress={handleSignUp}
+          //onPress={handlePress}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
@@ -94,7 +107,7 @@ const LoginScreen = () => {
   )
 }
 
-export default LoginScreen
+export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
