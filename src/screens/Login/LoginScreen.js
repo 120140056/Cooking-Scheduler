@@ -15,6 +15,9 @@ const firebaseConfig = {
   appId: '1:813643875918:web:fc188c314f6ab18dcba51f'
 };
 
+// Export auth from this module
+export const auth = getAuth();
+
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,7 +26,6 @@ const LoginScreen = () => {
 
   useEffect(() => {
     initializeApp(firebaseConfig);
-    const auth = getAuth();
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -35,7 +37,6 @@ const LoginScreen = () => {
   }, []);
 
   const handleSignUp = () => {
-    const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
@@ -45,7 +46,6 @@ const LoginScreen = () => {
   };
 
   const handleLogin = () => {
-    const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;

@@ -3,8 +3,18 @@ import { View, Alert } from "react-native";
 import PropTypes from "prop-types";
 import styles from "./styles";
 import MenuButton from "../../components/MenuButton/MenuButton";
+import { auth } from "../Login/LoginScreen";
 
 export default function DrawerContainer(props) {
+  const handleSignOut = () => {
+    auth
+      .signOut()
+      .then(() => {
+        navigation.navigate("Login");
+      })
+      .catch(error => alert(error.message))
+  }
+
   const { navigation } = props;
   return (
     <View style={styles.content}>
@@ -37,7 +47,7 @@ export default function DrawerContainer(props) {
           title="LOG OUT"
           source={require("../../../assets/icons/logout.png")}
           onPress={() => {
-            navigation.navigate("Login");
+            handleSignOut();
             navigation.closeDrawer();
           }}
         />

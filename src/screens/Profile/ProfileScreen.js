@@ -1,14 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from './style';
+import { onAuthStateChanged, updateEmail, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
+
+import { auth } from '../Login/LoginScreen';
 
 const ProfileScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState([]);
   const [avoided, setAvoided] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setEmail(user.email || '');
+        if (user.providerData[0].providerId === 'password') {
+          reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, password))
+            .then(() => {
+              setPassword(user.providerData[0].uid);
+              setLoading(false);
+            })
+            .catch((error) => {
+              console.log('Error reauthenticating user:', error);
+              setPassword(''); // Set an empty password in case of error
+              setLoading(false);
+            });
+        } else {
+          setPassword(''); // Set an empty password for non-password based authentication
+          setLoading(false);
+        }
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   const handleAddFavorite = (ingredient) => {
     setFavorites((prevFavorites) => [...prevFavorites, ingredient]);
@@ -31,15 +61,43 @@ const ProfileScreen = () => {
   };
 
   const handleUpdate = () => {
-    // Handle updating email, password, favorites, and avoided ingredients here
+    const user = auth.currentUser;
+
+    if (user) {
+      const credential = EmailAuthProvider.credential(user.email, password);
+
+      reauthenticateWithCredential(user, credential)
+        .then(() => {
+          updateEmail(user, email)
+            .then(() => {
+              console.log('Email updated successfully.');
+            })
+            .catch((error) => {
+              console.log('Error updating email:', error);
+            });
+          updatePassword(user, password)
+            .then(() => {
+              console.log('Password updated successfully.');
+            })
+            .catch((error) => {
+              console.log('Error updating password:', error);
+            });
+        })
+        .catch((error) => {
+          console.log('Error reauthenticating user:', error);
+        });
+    }
   };
 
   const handleCancel = () => {
-    // Handle resetting email, password, favorites, and avoided ingredients here
     setEmail('');
     setPassword('');
     setFavorites([]);
     setAvoided([]);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
   };
 
   return (
@@ -52,12 +110,19 @@ const ProfileScreen = () => {
           onChangeText={setEmail}
         />
         <Text>Password:</Text>
-        <TextInput
-          style={styles.input}
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry={true}
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            value={loading ? 'Loading...' : password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+          />
+          <TouchableOpacity onPress={togglePasswordVisibility}>
+            <Text style={styles.passwordVisibilityButton}>
+              {showPassword ? 'Hide' : 'Show'}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.separator} />
       <View style={styles.listContainer}>
@@ -77,7 +142,10 @@ const ProfileScreen = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={styles.button} onPress={() => {
+            handleUpdate()
+            navigation.goBack()
+          }}>
           <Text>Update</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
