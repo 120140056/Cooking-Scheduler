@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     marginBottom: 20,
+    alignItems: 'center',
   },
   listTitle: {
     fontSize: 16,

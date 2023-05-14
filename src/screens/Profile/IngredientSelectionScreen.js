@@ -1,9 +1,9 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import styles from './style';
 import { ingredients } from '../../data/dataArrays';
 import { auth, db } from '../Login/LoginScreen';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 const IngredientSelectionScreen = ({ route, navigation }) => {
   useLayoutEffect(() => {
@@ -15,6 +15,24 @@ const IngredientSelectionScreen = ({ route, navigation }) => {
   }, []);
 
   const [selectedIngredients, setSelectedIngredients] = useState([]);
+
+  useEffect(() => {
+    const fetchSelectedIngredients = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const uid = user.uid;
+        const docRef = doc(db, 'users', uid);
+        const docSnap = await getDoc(docRef);
+        const data = docSnap.data();
+        if (data && data.selectedIngredients) {
+          const selectedIngredientsIds = data.selectedIngredients.map((ingredient) => ingredient.ingredientId);
+          setSelectedIngredients(selectedIngredientsIds);
+        }
+      }
+    };
+
+    fetchSelectedIngredients();
+  }, []);
 
   const handleSelectIngredient = (ingredient) => {
     const ingredientId = ingredient.ingredientId;
@@ -89,6 +107,7 @@ const IngredientSelectionScreen = ({ route, navigation }) => {
           <Text>{ingredient.name}</Text>
         </TouchableOpacity>
       ))}
+      <View style={styles.separator} />
     </ScrollView>
   );
 };

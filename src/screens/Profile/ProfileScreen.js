@@ -64,7 +64,7 @@ const ProfileScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text>Email:</Text>
+        <Text>New Email:</Text>
         <TextInput
           style={styles.input}
           value={email}
@@ -87,7 +87,7 @@ const ProfileScreen = ({ route }) => {
           />
           <TouchableOpacity onPress={togglePasswordVisibility}>
             <Text style={styles.passwordVisibilityButton}>
-              {showPassword ? 'Hide' : 'Show'}
+              {showPassword ? 'Hide Password' : 'Show Password'}
             </Text>
           </TouchableOpacity>
         </View>

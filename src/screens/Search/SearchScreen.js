@@ -1,13 +1,11 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, Text, View, Image, TouchableHighlight, Pressable } from "react-native";
+import { FlatList, Text, View, Image, TouchableHighlight, Pressable, TextInput } from "react-native";
 import styles from "./styles";
 import MenuImage from "../../components/MenuImage/MenuImage";
 import { getCategoryName, getRecipesByRecipeName, getRecipesByCategoryName, getRecipesByIngredientName } from "../../data/MockDataAPI";
-import { TextInput } from "react-native-gesture-handler";
 
 export default function SearchScreen(props) {
   const { navigation } = props;
-
   const [value, setValue] = useState("");
   const [data, setData] = useState([]);
 
@@ -25,19 +23,20 @@ export default function SearchScreen(props) {
           <Image style={styles.searchIcon} source={require("../../../assets/icons/search.png")} />
           <TextInput
             style={styles.searchInput}
+            placeholder="Search"
             onChangeText={handleSearch}
             value={value}
           />
-          <Pressable onPress={() => handleSearch("")}>
-          <Image style={styles.searchIcon} source={require("../../../assets/icons/close.png")} />
-          </Pressable>
+          {value !== "" && (
+            <Pressable onPress={clearSearch}>
+              <Image style={styles.searchIcon} source={require("../../../assets/icons/close.png")} />
+            </Pressable>
+          )}
         </View>
       ),
       headerRight: () => <View />,
     });
   }, [value]);
-
-  useEffect(() => {}, [value]);
 
   const handleSearch = (text) => {
     setValue(text);
@@ -47,11 +46,16 @@ export default function SearchScreen(props) {
     var aux = recipeArray1.concat(recipeArray2);
     var recipeArray = [...new Set(aux)];
 
-    if (text == "") {
+    if (text === "") {
       setData([]);
     } else {
       setData(recipeArray);
     }
+  };
+
+  const clearSearch = () => {
+    setValue("");
+    setData([]);
   };
 
   const onPressRecipe = (item) => {
@@ -59,18 +63,31 @@ export default function SearchScreen(props) {
   };
 
   const renderRecipes = ({ item }) => (
-      <View >
+    <TouchableHighlight
+      underlayColor="rgba(73,182,77,0.9)"
+      onPress={() => onPressRecipe(item)}
+      style={styles.recipeItem}
+    >
+      <View>
         <Image style={styles.photo} source={{ uri: item.photo_url }} />
         <Text style={styles.title}>{item.title}</Text>
         <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" onPress={() => onPressRecipe(item)}>
-        <Text style={styles.searchButton}>Lihat Detail</Text>
-      
+          <Text style={styles.searchButton}>Lihat Detail</Text>
+        </TouchableHighlight>
+      </View>
     </TouchableHighlight>
-    </View>
   );
+
   return (
-    <View>
-      <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={data} renderItem={renderRecipes} keyExtractor={(item) => `${item.recipeId}`} />
+    <View style={styles.container}>
+      <FlatList
+        data={data}
+        renderItem={renderRecipes}
+        keyExtractor={(item) => `${item.recipeId}`}
+        numColumns={2}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 }
