@@ -4,8 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 import { updateEmail, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 import { auth } from '../Login/LoginScreen';
 import styles from './style';
+import IngredientSelectionScreen from './IngredientSelectionScreen';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ route }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitleStyle: {
@@ -95,15 +96,9 @@ const ProfileScreen = () => {
       <View style={styles.listContainer}>
         <TouchableOpacity
           style={styles.listButton}
-          onPress={() => Alert.alert('Coming Soon!', 'This feature will be available in a future update.')}
+          onPress={() => navigation.navigate('IngredientSelection')}
         >
-          <Text style={styles.listTitle}>Favorite Ingredients:</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.listButton}
-          onPress={() => Alert.alert('Coming Soon!', 'This feature will be available in a future update.')}
-        >
-          <Text style={styles.listTitle}>Avoided Ingredients:</Text>
+          <Text style={styles.listTitle}>Avoided Ingredients</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>

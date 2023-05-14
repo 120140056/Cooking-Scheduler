@@ -5,6 +5,8 @@ import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndP
 
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBmipUT-Z2Q37X8lvC1YGk3SMTgFQKMbvc',
@@ -15,6 +17,7 @@ const firebaseConfig = {
   appId: '1:813643875918:web:fc188c314f6ab18dcba51f'
 };
 const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 export const auth = getAuth();
 
 const LoginScreen = () => {
@@ -53,10 +56,6 @@ const LoginScreen = () => {
       .catch((error) => alert(error.message));
   };
 
-  function handlePress() {
-    navigation.navigate('Home');
-  }
-
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -89,14 +88,12 @@ const LoginScreen = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={handleLogin}
-          //onPress={handlePress}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleSignUp}
-          //onPress={handlePress}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>

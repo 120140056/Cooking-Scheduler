@@ -52,7 +52,6 @@ export function getRecipes(categoryId) {
   return recipesArray;
 }
 
-// modifica
 export function getRecipesByIngredient(ingredientId) {
   const recipesArray = [];
   recipes.map(data => {
