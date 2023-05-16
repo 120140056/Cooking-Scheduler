@@ -19,6 +19,8 @@ import BackButton from "../../components/BackButton/BackButton";
 import ViewIngredientsButton from "../../components/ViewIngredientsButton/ViewIngredientsButton";
 import ShareButton from "../../components/ShareButton/ShareButton";
 
+import * as Linking from 'expo-linking';
+
 const { width: viewportWidth } = Dimensions.get("window");
 
 export default function RecipeScreen(props) {
@@ -46,7 +48,7 @@ export default function RecipeScreen(props) {
         />
       ),
       headerRight: () => 
-        <ShareButton shareData={[navigation, item.title]} />,
+        <ShareButton shareData={[Linking.createURL(String(item.recipeId)), item.title]} />,
     });
   }, []);
 
