@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, Text, View, TouchableHighlight, Image, ScrollView } from "react-native";
+import { FlatList, Text, View, TouchableHighlight, Image, ScrollView, Touchable } from "react-native";
 import styles from "./styles";
 import { recipes } from "../../data/dataArrays";
 import MenuImage from "../../components/MenuImage/MenuImage";
@@ -57,20 +57,23 @@ export default function HomeScreen(props) {
   };
 
   const renderRecipes = ({ item }) => (
-    <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" onPress={() => onPressRecipe(item)}>
-      <View style={styles.container}>
-        <Image style={styles.photo} source={{ uri: item.photo_url }} />
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.category}>{getCategoryName(item.categoryId)}</Text>
-      </View>
-    </TouchableHighlight>
+    <View style={styles.container}>
+      <Text style={styles.title}>{item.title}</Text>
+      <Image style={styles.photo} source={{ uri: item.photo_url }} />
+      <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" onPress={() => onPressRecipe(item)}>
+        <Text style={styles.textButton}>More detail</Text>
+      </TouchableHighlight>
+    </View>
+
   );
+
+
 
   const randomRecipes = getRandomRecipes(4);
 
   return (
     <ScrollView>
-      <Text style={styles.recommendationTitle}>Recommend Meal</Text>
+      <Text style={styles.recommendationTitle}>Today's Meal</Text>
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}

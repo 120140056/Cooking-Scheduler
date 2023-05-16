@@ -3,12 +3,14 @@ import { RecipeCard } from '../../AppStyles';
 
 const styles = StyleSheet.create({
   container: RecipeCard.container,
-  photo: RecipeCard.photo,
   title: RecipeCard.title,
+  photo: RecipeCard.photo,
   category: RecipeCard.category,
+  textButton: RecipeCard.textButton,
   recommendationTitle: {
     fontSize: 20,
     fontWeight: 'bold',
+    textAlign: 'center',
     marginTop: 20,
     marginLeft: 10,
   },
