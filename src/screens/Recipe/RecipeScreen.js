@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableHighlight,
   Alert,
+  Share
 } from "react-native";
 import styles from "./styles";
 import Carousel, { Pagination } from "react-native-snap-carousel";
@@ -18,6 +19,8 @@ import {
 import BackButton from "../../components/BackButton/BackButton";
 import ViewIngredientsButton from "../../components/ViewIngredientsButton/ViewIngredientsButton";
 import ShareButton from "../../components/ShareButton/ShareButton";
+
+import * as Linking from 'expo-linking';
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -31,6 +34,28 @@ export default function RecipeScreen(props) {
   const [activeSlide, setActiveSlide] = useState(0);
 
   const slider1Ref = useRef();
+
+  const onShare = async () => {
+    const recipeName = item.title;
+    const redirectURL = Linking.createURL(String(item.recipeId));
+
+    try {
+        const result = await Share.share({
+            message: redirectURL + "\n Try this recipe \" " + recipeName + "\"!"
+        });
+        if (result === Share.sharedAction) {
+            if (result.activityType) {
+                // Activity share
+            } else {
+                // shared
+            }
+        } else if (result.action === Share.dismissedAction) {
+            // dismissed
+        }
+    } catch (error) {
+        Alert.alert(error.message)
+    }
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -46,7 +71,7 @@ export default function RecipeScreen(props) {
         />
       ),
       headerRight: () => 
-        <ShareButton shareData={[navigation, item.title]} />,
+        <ShareButton shareHandler={onShare} />,
     });
   }, []);
 

@@ -4,30 +4,11 @@ import PropTypes from "prop-types";
 import styles from "./styles";
 
 export default function ShareButton(props) {
-    const onShare = async () => {
-        const [recipeURL, recipeName] = props.shareData
-        console.log(recipeURL, recipeName)
-        try {
-            const result = await Share.share({
-                message: recipeURL + "\n Try this recipe \" " + recipeName + "\"!"
-            });
-            if (result === Share.sharedAction) {
-                if (result.activityType) {
-                    // Activity share
-                } else {
-                    // shared
-                }
-            } else if (result.action === Share.dismissedAction) {
-                // dismissed
-            }
-        } catch (error) {
-            Alert.alert(error.message)
-        }
-    };
-
+    
+    const onShare = props.shareHandler;
 
   return (
-    <TouchableHighlight onPress={onShare} style={styles.btnContainer}>
+    <TouchableHighlight style={styles.btnContainer} onPress={onShare}>
       <Image source={require("../../../assets/icons/shareButton.png")} style={styles.btnIcon} />
     </TouchableHighlight>
   );
