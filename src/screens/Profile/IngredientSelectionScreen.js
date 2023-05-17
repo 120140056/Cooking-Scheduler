@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-nati
 import styles from './style';
 import { ingredients } from '../../data/dataArrays';
 import { auth, db } from '../Login/LoginScreen';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const IngredientSelectionScreen = ({ route, navigation }) => {
   useLayoutEffect(() => {
